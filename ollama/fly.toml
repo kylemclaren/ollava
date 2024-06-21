@@ -1,0 +1,33 @@
+# fly.toml app configuration file generated for llava-api on 2024-06-19T20:01:55+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = ''
+primary_region = 'ord'
+
+[build]
+  image = 'ollama/ollama:latest'
+
+[[mounts]]
+  source = 'ollama'
+  destination = '/root/.ollama'
+  initial_size = '30gb'
+
+[http_service]
+  internal_port = 11434
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '10s'
+    method = 'GET'
+    path = '/'
+
+[[vm]]
+  size = 'performance-8x'
+  memory = '16gb'
+  gpu_kind = 'l40s'
