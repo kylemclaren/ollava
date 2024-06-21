@@ -29,7 +29,7 @@ def upload_file(client, user_token, channel_id, description, file_path):
         response = client.files_upload_v2(
             token=user_token,
             channel=channel_id,
-            alt_txt=description,
+            alt_txt="(AI-generated) "+description,
             file=file_path
         )
     except SlackApiError as e:
