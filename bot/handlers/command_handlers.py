@@ -24,8 +24,9 @@ def open_modal(ack, body, client):
                     "block_id": "channel_block_id",
                     "label": {"type": "plain_text", "text": "Select Channel"},
                     "element": {
-                        "type": "channels_select",
+                        "type": "conversations_select",
                         "action_id": "channel_select_action_id",
+                        "default_to_current_conversation": True,
                         "placeholder": {"type": "plain_text", "text": "Select a channel"},
                     },
                 },

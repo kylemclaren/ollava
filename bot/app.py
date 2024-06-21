@@ -49,10 +49,11 @@ app.command("/upload")(command_handlers.open_modal)
 @app.view("image_upload_modal")
 def handle_image_upload(ack, body, client, context):
     ack()
+    logging.info(json.dumps(body, indent=2))
     user_id = body["user"]["id"]
     team_id = body["team"]["id"]
     user_token = get_user_token(user_id, team_id)
-    channel_id = body["view"]["state"]["values"]["channel_block_id"]["channel_select_action_id"]["selected_channel"]
+    channel_id = body["view"]["state"]["values"]["channel_block_id"]["channel_select_action_id"]["selected_conversation"]
     file_info = body["view"]["state"]["values"]["input_block_id"]["file_input_action_id_1"]["files"][0]
     file_id = file_info["id"]
     file_url = file_info["url_private_download"]
