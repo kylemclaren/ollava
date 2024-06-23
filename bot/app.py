@@ -1,13 +1,13 @@
 import os
 import logging
+import base64
+import json
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 from slack_bolt.oauth.oauth_settings import OAuthSettings
 from slack_sdk.oauth.installation_store import FileInstallationStore
 from slack_sdk.oauth.state_store import FileOAuthStateStore
 from handlers import command_handlers
-import base64
-import json
 from utils.file_helpers import download_file, delete_file, upload_file
 from utils.api_helpers import generate_image_description
 
@@ -49,10 +49,10 @@ app.command("/upload")(command_handlers.open_modal)
 @app.view("image_upload_modal")
 def handle_image_upload(ack, body, client, context):
     ack()
-    logging.info(json.dumps(body, indent=2))
     user_id = body["user"]["id"]
     team_id = body["team"]["id"]
     user_token = get_user_token(user_id, team_id)
+    initial_comment = body["view"]["state"]["values"]["initial_comment_id"]["initial_comment_action_id"]["value"]
     channel_id = body["view"]["state"]["values"]["channel_block_id"]["channel_select_action_id"]["selected_conversation"]
     file_info = body["view"]["state"]["values"]["input_block_id"]["file_input_action_id_1"]["files"][0]
     file_id = file_info["id"]
@@ -62,6 +62,7 @@ def handle_image_upload(ack, body, client, context):
     delete_file(client, user_token, file_id)
     description = generate_image_description(encoded_image, os.environ.get('OLLAMA_API_URL'))
     upload_file(client, user_token, channel_id, description, file_path)
+    upload_file(client, user_token, channel_id, initial_comment, description, file_path)
 
 def encode_image_to_base64(image_path):
     with open(image_path, 'rb') as image_file:

@@ -6,7 +6,7 @@ def open_modal(ack, body, client):
             "type": "modal",
             "callback_id": "image_upload_modal",
             "title": {"type": "plain_text", "text": "Upload Image"},
-            "submit": {"type": "plain_text", "text": "Submit"},  # Submit button
+            "submit": {"type": "plain_text", "text": "Send"},
             "blocks": [
                 {
                     "type": "input",
@@ -17,6 +17,20 @@ def open_modal(ack, body, client):
                         "action_id": "file_input_action_id_1",
                         "filetypes": ["jpg", "png"],
                         "max_files": 1,
+                    },
+                },
+                {
+                    "type": "input",
+                    "block_id": "initial_comment_id",
+                    "optional": True,
+                    "label": {
+                    "type": "plain_text",
+                    "text": "Initial Comment"
+                    },
+                    "element": {
+                        "type": "plain_text_input",
+                        "multiline": False,
+                        "action_id": "initial_comment_action_id",
                     },
                 },
                 {

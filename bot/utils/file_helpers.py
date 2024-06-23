@@ -24,11 +24,12 @@ def download_file(file_url, token):
         print(f"Failed to download file: {e}")
         return None
     
-def upload_file(client, user_token, channel_id, description, file_path):
+def upload_file(client, user_token, channel_id, initial_comment, description, file_path):
     try:
         response = client.files_upload_v2(
             token=user_token,
             channel=channel_id,
+            initial_comment=initial_comment,
             alt_txt="(AI-generated) "+description,
             file=file_path
         )
